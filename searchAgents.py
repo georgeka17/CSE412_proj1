@@ -276,35 +276,43 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # Number of search nodes expanded
         
         "*** YOUR CODE HERE ***"
-        #cornersHaveFood = []
-        #for corner in self.corners:
-        #    if(startingGameState.hasFood(*corner)):
-        #        cornersHaveFood.append(True)
-        #    else:
-        #        cornersHaveFood.append(False)
-        #self.gameState = self.getStartState()
+        cornersHaveFood  = []
+        for corner in self.corners:
+            if(startingGameState.hasFood(*corner)):
+                cornersHaveFood.append(True)
+            else:
+                cornersHaveFood.append(False)
+        self.gameState = self.getStartState()
         self.costFn = lambda x: 1
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
-        cornersHaveFood = []
-        for corner in self.corners:
-            cornersHaveFood.append(True)
         
+        cornersHaveFood = [True, True, True, True]
         return (self.startingPosition, cornersHaveFood)
+        """
+        return self.startingPosition
         util.raiseNotDefined()
-
+        """
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        
+        """
+        if len(state[1]) == 4:
+            return True
+        else: 
+            return False
+            # util.raiseNotDefined()
+        """   
+        print(state)
         for corner in state[1]:
             if(corner == True):
                 return False
         return True
+    
         util.raiseNotDefined()
-
+            
     def getSuccessors(self, state):
         """
         Returns successor states, the actions they require, and a cost of 1.
@@ -319,29 +327,39 @@ class CornersProblem(search.SearchProblem):
         successors = []
         #exit()
         coord = state[0]
-        cornersHaveFood = state[1]
+        # cornersHaveFood = state[1]
+        
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
             x,y = coord
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
-            cornersHaveFood = state[1]
+        
+            nextCornersHaveFood = [c for c in state[1]]
             "*** YOUR CODE HERE ***"
-#            for corner in range(len(self.corners)):
-#                if coord == self.corners[corner]:
-#                cornersHaveFood[corner] = False
+            """
+            for corner in range(len(self.corners)):
+                if coord == self.corners[corner]:
+                    cornersHaveFood[corner] = False
 
-            
+            """
             if not self.walls[nextx][nexty]:
                 nextCoord = (nextx, nexty)
+                """
+                for corner in self.corners:
+                    if nextCoord == corner:
+                        
+                        cornersHaveFood.append(corner)
+
+                """
                 for corner in range(len(self.corners)):
                     if nextCoord == self.corners[corner]:
-                        cornersHaveFood[corner] = False
-                    
+                        nextCornersHaveFood[corner] = False #update game state
+                                    
                 cost = 1 #self.costFn(nextCoord) #idk if this works?
 
-                successor = [(nextCoord, cornersHaveFood), action, cost]
+                successor = [(nextCoord, nextCornersHaveFood), action, cost]
                 print(successor)
                 successors.append(successor)
                 
