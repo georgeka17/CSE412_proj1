@@ -128,22 +128,25 @@ def breadthFirstSearch(problem):
 
     #starting search
     node = toBeVisited.pop()
+    # print(node)
     while not problem.isGoalState(node):
         if node not in visited.list:
             visited.push(node)
             for s in problem.getSuccessors(node):
                 coord = s[0]
+                print(coord)
                 direction = s[1]
                 toBeVisited.push(coord)
                 tempPath = path + [direction]
                 pathToCurrentNode.push(tempPath)
-
         if toBeVisited.isEmpty():
             # raise exception
-#            util.raisePathNotFound()
+
+            # util.raisePathNotFound()
             return path
         node = toBeVisited.pop()
         path = pathToCurrentNode.pop()
+    print(path)
     return path
 
 
@@ -152,39 +155,30 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     "*** YOUR CODE HERE ***"
-    startNode = problem.getStartState()
+    tempPath = []
+    startNode = (problem.getStartState(), '', 0, tempPath)
     
     path = []
-    tempPath = []
     toBeVisited = util.PriorityQueue()
-
+    
     visited = util.Stack()
     pathToCurrentNode = util.PriorityQueue()
-
     toBeVisited.push(startNode, 0)
 
     node = toBeVisited.pop()
-    while not problem.isGoalState(node):
-        if node not in visited.list:
-            visited.push(node)
-            print(problem.getSuccessors(node))
-            for s in problem.getSuccessors(node):
-                coord = s[0]
-                direction = s[1]
-                tempPath = path + [direction]
-                print "node", coord
-                print "cost",  problem.getCostOfActions(tempPath)
-                cost = problem.getCostOfActions(tempPath)
-
-                if coord not in visited.list:
-                    toBeVisited.push(coord, cost)
-                    pathToCurrentNode.push(tempPath, cost)
+    while not problem.isGoalState(node[0]):
+        visited.push(node[0])
+        for s in problem.getSuccessors(node[0]):
+            coord = s[0]
+            cost = s[2]
+            
+            if coord not in visited.list:
+                toBeVisited.push((s[0],s[1],cost + node[2],node[3] + [s[1]]), cost+node[2])
         if toBeVisited.isEmpty():
             #raise exception path not found
             return path
         node = toBeVisited.pop()
-        path = pathToCurrentNode.pop()
-    return path
+    return node[3]
 
     util.raiseNotDefined()
 
