@@ -403,9 +403,29 @@ def cornersHeuristic(state, problem):
     
     "*** YOUR CODE HERE ***"
     #return 0 # Default to trivial solution
-    coord = state[0]
-    visitedCorners = state[1]
-    print(visitedCorners)
+    coord = state[0] #get the coordinate 
+    visitedCorners = [] # will be of form [true,true,true,true]
+    unvisitedCorners = []
+    #get coordinates for the corners and put in visitedCorners
+    for i in range(len(corners)):
+        if state[1][i] == False: #state[1] is the boolean list of corners, i indexes the list
+            visitedCorners.append(corners[i])
+        else:
+            unvisitedCorners.append(corners[i])
+    print("visited ", visitedCorners)
+    print("not visited ", unvisitedCorners)
+    # i believe that the above for-each loop correctly moves the corners in to visited/unvisited
+    """
+    for corner in corners: #index this using range(len(corners)
+        if corner not in visitedCorners:
+            unvisitedCorners.append(corner)
+    """
+    #using maze distance to farthest corner
+    heuristic = [0] #need to take max, so leave 0 here for nullHeuristic
+    for corner in corners:
+        heuristic.append(mazeDistance(coord,corner,problem.startingGameState))
+    return max(heuristic)
+
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
     def __init__(self):
