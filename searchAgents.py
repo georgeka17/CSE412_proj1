@@ -283,6 +283,7 @@ class CornersProblem(search.SearchProblem):
             else:
                 cornersHaveFood.append(False)
         self.gameState = self.getStartState()
+        self.startingGameState = startingGameState
         self.costFn = lambda x: 1
 
     def getStartState(self):
@@ -408,6 +409,7 @@ def cornersHeuristic(state, problem):
     unvisitedCorners = []
     #get coordinates for the corners and put in visitedCorners
     for i in range(len(corners)):
+        print(state[1][i]
         if state[1][i] == False: #state[1] is the boolean list of corners, i indexes the list
             visitedCorners.append(corners[i])
         else:
@@ -423,7 +425,7 @@ def cornersHeuristic(state, problem):
     #using maze distance to farthest corner
     heuristic = [0] #need to take max, so leave 0 here for nullHeuristic
     for corner in corners:
-        heuristic.append(mazeDistance(coord,corner,problem.startingGameState))
+        heuristic.append(mazeDistance(coord,corner, problem.startingGameState))
     return max(heuristic)
 
 class AStarCornersAgent(SearchAgent):
@@ -543,7 +545,10 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
+
+        from search import breadthFirstSearch
+        return breadthFirstSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -579,8 +584,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
-
+        #util.raiseNotDefined()
+        return state in self.food.asList()
 ##################
 # Mini-contest 1 #
 ##################
