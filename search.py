@@ -134,7 +134,6 @@ def breadthFirstSearch(problem):
             visited.push(node)
             for s in problem.getSuccessors(node):
                 coord = s[0]
-                print(coord)
                 direction = s[1]
                 toBeVisited.push(coord)
                 tempPath = path + [direction]
@@ -145,7 +144,6 @@ def breadthFirstSearch(problem):
             return path
         node = toBeVisited.pop()
         path = pathToCurrentNode.pop()
-    print(path)
     return path
 
 
@@ -175,7 +173,7 @@ def uniformCostSearch(problem):
                 toBeVisited.push((s[0],s[1], s[2], node[3] + [s[1]]), cost)
         if toBeVisited.isEmpty():
             #raise exception path not found
-            return path
+            return node[3]
         node = toBeVisited.pop()
     return node[3]
 
@@ -207,11 +205,13 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             for s in problem.getSuccessors(node[0]):
                 coord = s[0]
                 cost = s[2] + node[2] #g value
+                f_val = cost + heuristic(coord, problem)
                 if coord not in visited.list:
-                    toBeVisited.push((s[0], s[1], cost, node[3] + [s[1]]), cost+heuristic(coord,problem))
+                    toBeVisited.push((s[0], s[1], cost, node[3] + [s[1]]), f_val)
         if toBeVisited.isEmpty():
             return node[3]
         node = toBeVisited.pop()
+#        print("current path ", node[3])
     return node[3]
 
     util.raiseNotDefined()
