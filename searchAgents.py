@@ -306,7 +306,6 @@ class CornersProblem(search.SearchProblem):
             return False
             # util.raiseNotDefined()
         """   
-        print(state)
         for corner in state[1]:
             if(corner == True):
                 return False
@@ -326,25 +325,17 @@ class CornersProblem(search.SearchProblem):
          cost of expanding to that successor
         """
         successors = []
-        #exit()
         coord = state[0]
-        # cornersHaveFood = state[1]
-        
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
             x,y = coord
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
-        
+            
+            #making a copy of the corners bool list
             nextCornersHaveFood = [c for c in state[1]]
             "*** YOUR CODE HERE ***"
-            """
-            for corner in range(len(self.corners)):
-                if coord == self.corners[corner]:
-                    cornersHaveFood[corner] = False
-
-            """
             if not self.walls[nextx][nexty]:
                 nextCoord = (nextx, nexty)
                 for corner in range(len(self.corners)):
@@ -401,24 +392,15 @@ def cornersHeuristic(state, problem):
     unvisitedCorners = []
     #get coordinates for the corners and put in visitedCorners
     for i in range(len(corners)):
-        #print("state of corner:", state[1][i])
         if state[1][i] == False: #state[1] is the boolean list of corners, i indexes the list
             visitedCorners.append(corners[i])
         else:
             unvisitedCorners.append(corners[i])
-    #print("visited ", visitedCorners)
-    #print("not visited ", unvisitedCorners)
-    # i believe that the above for-each loop correctly moves the corners in to visited/unvisited
-    """
-    for corner in corners: #index this using range(len(corners)
-        if corner not in visitedCorners:
-            unvisitedCorners.append(corner)
-    """
+    
     #using maze distance to farthest corner
     heuristic = [0] #need to take max, so leave 0 here for nullHeuristic
     for corner in unvisitedCorners:
         heuristic.append(util.manhattanDistance(coord,corner))
-    #print("list of heuristics: ", heuristic)
     return max(heuristic)
 
 class AStarCornersAgent(SearchAgent):
@@ -512,12 +494,21 @@ def foodHeuristic(state, problem):
     "*** YOUR CODE HERE ***"
     foods = foodGrid.asList()
     #goal state is when there is no more food left
-    if foods.isEmpty():
+    if not foods:
         return 0
 
     heuristic = [0]
-    for food in foods:
-        heuristic.append(manhattanDistance(position, food))
+    for food in foods[0:5]:
+        manDist = util.manhattanDistance(position, food)
+        """
+        if (manDist < 2):
+            mazeDist = mazeDistance(position, food, problem.startingGameState)
+            heuristic.append(mazeDist)
+        else:
+            heuristic.append(manDist)
+        """
+        heuristic.append(manDist)
+        #print(max(heuristic))
     return max(heuristic)
 
 class ClosestDotSearchAgent(SearchAgent):
