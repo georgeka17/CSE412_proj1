@@ -169,10 +169,10 @@ def uniformCostSearch(problem):
         visited.push(node[0])
         for s in problem.getSuccessors(node[0]):
             coord = s[0]
-            cost = s[2]
+            cost = s[2] + node[2] #g-value
             
             if coord not in visited.list:
-                toBeVisited.push((s[0],s[1], s[2], node[3] + [s[1]]), cost+node[2])
+                toBeVisited.push((s[0],s[1], s[2], node[3] + [s[1]]), cost)
         if toBeVisited.isEmpty():
             #raise exception path not found
             return path
@@ -206,9 +206,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             visited.push(node[0])
             for s in problem.getSuccessors(node[0]):
                 coord = s[0]
-                cost = s[2]
+                cost = s[2] + node[2] #g value
                 if coord not in visited.list:
-                    toBeVisited.push((s[0], s[1], cost + node[2], node[3] + [s[1]]), cost+heuristic(coord,problem))
+                    toBeVisited.push((s[0], s[1], cost, node[3] + [s[1]]), cost+heuristic(coord,problem))
         if toBeVisited.isEmpty():
             return node[3]
         node = toBeVisited.pop()
