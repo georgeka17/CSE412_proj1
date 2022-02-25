@@ -276,7 +276,7 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # Number of search nodes expanded
         
         "*** YOUR CODE HERE ***"
-        cornersHaveFood  = []
+        cornersHaveFood  = [] #bool list of whether the corners have food or not
         for corner in self.corners:
             if(startingGameState.hasFood(*corner)):
                 cornersHaveFood.append(True)
@@ -348,11 +348,6 @@ class CornersProblem(search.SearchProblem):
                 successors.append(successor)
                 
         self._expanded += 1
-                
-                #        if state not in self._visited:
-                #            self._visited[state] = True
-                #            self._visitedlist.append(state) 
-#        print(successors)        
         return successors
                 
     def getCostOfActions(self, actions):
@@ -499,16 +494,9 @@ def foodHeuristic(state, problem):
 
     heuristic = [0]
     for food in foods[0:5]:
-        manDist = util.manhattanDistance(position, food)
-        """
-        if (manDist < 2):
             mazeDist = mazeDistance(position, food, problem.startingGameState)
             heuristic.append(mazeDist)
-        else:
-            heuristic.append(manDist)
-        """
-        heuristic.append(manDist)
-        #print(max(heuristic))
+        
     return max(heuristic)
 
 class ClosestDotSearchAgent(SearchAgent):
